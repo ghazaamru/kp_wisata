@@ -3,28 +3,28 @@
 namespace App\Http\Controllers;
 
 use App\Models\Wisata;
-use App\Models\Kategori; // Nanti akan kita butuhkan untuk form
+use App\Models\Kategori;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 class WisataController extends Controller
 {
     /**
      * Menampilkan daftar data wisata.
      */
-   public function index()
+    public function index()
     {
-    $user = \Illuminate\Support\Facades\Auth::user();
-    
-    if ($user->role === 'superadmin') {
-        // Menggunakan with() untuk Eager Loading, lebih efisien
-        $semuaWisata = \App\Models\Wisata::with('user')->latest()->get();
-    } 
-    else {
-        $semuaWisata = \App\Models\Wisata::where('user_id', $user->id)->latest()->get();
-    }
+        $user = Auth::user();
+        
+        if ($user->role === 'superadmin') {
+            $semuaWisata = Wisata::with('user')->latest()->get();
+        } 
+        else {
+            $semuaWisata = Wisata::where('user_id', $user->id)->latest()->get();
+        }
 
-    return view('admin.wisata.index', compact('semuaWisata'));
+        return view('admin.wisata.index', compact('semuaWisata'));
     }
 
     /**
@@ -32,16 +32,13 @@ class WisataController extends Controller
      */
     public function create()
     {
-        // $kategori = Kategori::all(); // Nanti untuk dropdown kategori
-        // 1. Ambil semua data dari tabel 'kategori'
         $kategori = Kategori::all();
-
-        // 2. Kirim data tersebut ke view menggunakan 'compact'
         return view('admin.wisata.create', compact('kategori'));
     }
 
     /**
      * Menyimpan data baru ke database.
+     * INI ADALAH SATU-SATUNYA METHOD STORE YANG BENAR
      */
     public function store(Request $request)
     {
@@ -49,13 +46,21 @@ class WisataController extends Controller
             'nama_obyek_wisata' => 'required|string|max:255',
             'deskripsi' => 'required|string',
             'lokasi' => 'required|string',
-            // 'kategori_id' => 'required|exists:kategori,id',
+            'kategori_id' => 'required|exists:kategori,id',
+            'gambar' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', // Validasi gambar
         ]);
 
-        $wisata = new Wisata($request->all());
-        $wisata->user_id = Auth::id(); // Set user_id dari user yang login
-        //$wisata->kategori_id = 1; // Placeholder, ganti dengan data dari form
-        $wisata->save();
+        $data = $request->all();
+
+        // Cek jika ada file gambar yang di-upload
+        if ($request->hasFile('gambar')) {
+            // Simpan gambar ke storage/app/public/wisata dan simpan path-nya
+            $path = $request->file('gambar')->store('wisata', 'public');
+            $data['gambar'] = $path;
+        }
+
+        $data['user_id'] = Auth::id();
+        Wisata::create($data);
 
         return redirect()->route('admin.wisata.index')
                          ->with('success', 'Data wisata berhasil ditambahkan.');
@@ -64,19 +69,16 @@ class WisataController extends Controller
     /**
      * Menampilkan form untuk mengedit data.
      */
-    public function edit(\App\Models\Wisata $wisata)
-{
-    // Otorisasi: Hanya superadmin atau pemilik data yang boleh edit
-    if (auth()->user()->role !== 'superadmin' && $wisata->user_id !== auth()->id()) {
-        abort(403, 'AKSES DITOLAK');
+    public function edit(Wisata $wisata)
+    {
+        // Otorisasi: Hanya superadmin atau pemilik data yang boleh edit
+        if (auth()->user()->role !== 'superadmin' && $wisata->user_id !== auth()->id()) {
+            abort(403, 'AKSES DITOLAK');
+        }
+
+        $kategori = Kategori::all();
+        return view('admin.wisata.edit', compact('wisata', 'kategori'));
     }
-
-    $kategori = \App\Models\Kategori::all();
-
-    // Pastikan Anda mengirim $wisata yang di-inject oleh Laravel, bukan yang lain.
-    // Jangan ada baris seperti $wisata = new Wisata() di sini.
-    return view('admin.wisata.edit', compact('wisata', 'kategori'));
-}
 
     /**
      * Memperbarui data di database.
@@ -92,9 +94,25 @@ class WisataController extends Controller
             'nama_obyek_wisata' => 'required|string|max:255',
             'deskripsi' => 'required|string',
             'lokasi' => 'required|string',
+            'kategori_id' => 'required|exists:kategori,id',
+            'gambar' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
-        $wisata->update($request->all());
+        $data = $request->all();
+
+        // Cek jika ada file gambar baru yang di-upload
+        if ($request->hasFile('gambar')) {
+            // Hapus gambar lama jika ada
+            if ($wisata->gambar) {
+                Storage::disk('public')->delete($wisata->gambar);
+            }
+
+            // Simpan gambar baru dan update path-nya
+            $path = $request->file('gambar')->store('wisata', 'public');
+            $data['gambar'] = $path;
+        }
+
+        $wisata->update($data);
 
         return redirect()->route('admin.wisata.index')
                          ->with('success', 'Data wisata berhasil diperbarui.');
@@ -110,8 +128,22 @@ class WisataController extends Controller
             abort(403, 'AKSES DITOLAK');
         }
 
+        // Hapus juga gambar dari storage saat data dihapus
+        if ($wisata->gambar) {
+            Storage::disk('public')->delete($wisata->gambar);
+        }
+
         $wisata->delete();
         return redirect()->route('admin.wisata.index')
                          ->with('success', 'Data wisata berhasil dihapus.');
+    }
+
+    /**
+     * Menampilkan halaman detail untuk satu wisata.
+     */
+    public function show(Wisata $wisata)
+    {
+        // Mengirim data wisata yang dipilih ke view 'destinasi-detail'
+        return view('destinasi-detail', compact('wisata'));
     }
 }

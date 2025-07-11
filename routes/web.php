@@ -9,6 +9,8 @@ use Illuminate\Support\Facades\Route;
 
 // Route Halaman Utama (Publik)
 Route::get('/', [HomeController::class, 'index'])->name('home');
+Route::get('/destinasi/{wisata}', [WisataController::class, 'show'])->name('destinasi.show');
+
 
 // Route Otentikasi
 Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
@@ -42,4 +44,5 @@ Route::middleware(['auth'])->group(function () {
     // Route untuk Manajemen Kategori
     Route::resource('/admin/kategori', KategoriController::class)->names('admin.kategori');
 
+    
 });

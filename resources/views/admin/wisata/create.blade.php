@@ -6,7 +6,7 @@
 </head>
 <body>
 <div class="container mt-5">
-    <h2>Tambah Data Wisata Baru</h2>
+    <h2>Tambah Wisata Baru</h2>
 
     @if ($errors->any())
         <div class="alert alert-danger">
@@ -19,7 +19,7 @@
         </div>
     @endif
 
-    <form action="{{ route('admin.wisata.store') }}" method="POST">
+    <form action="{{ route('admin.wisata.store') }}" method="POST" enctype="multipart/form-data">
         @csrf
         <div class="mb-3">
             <label for="nama_obyek_wisata" class="form-label">Nama Obyek Wisata</label>
@@ -40,6 +40,11 @@
         <div class="mb-3">
             <label for="deskripsi" class="form-label">Deskripsi</label>
             <textarea class="form-control" style="height:150px" name="deskripsi" id="deskripsi" placeholder="Jelaskan tentang obyek wisata ini"></textarea>
+        </div>
+        
+        <div class="mb-3">
+            <label for="gambar" class="form-label">Gambar Destinasi</label>
+            <input class="form-control" type="file" name="gambar" id="gambar">
         </div>
         
         <button type="submit" class="btn btn-primary">Simpan</button>
