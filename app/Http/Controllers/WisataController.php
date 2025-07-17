@@ -48,6 +48,9 @@ class WisataController extends Controller
             'lokasi' => 'required|string',
             'kategori_id' => 'required|exists:kategori,id',
             'gambar' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', // Validasi gambar
+            'harga_tiket' => 'nullable|integer|min:0',
+            'jam_operasional' => 'nullable|string|max:255',
+            'link_hotel' => 'nullable|url|max:255',
         ]);
 
         $data = $request->all();
@@ -96,6 +99,10 @@ class WisataController extends Controller
             'lokasi' => 'required|string',
             'kategori_id' => 'required|exists:kategori,id',
             'gambar' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'harga_tiket' => 'nullable|integer|min:0',
+            'jam_operasional' => 'nullable|string|max:255',
+            'link_hotel' => 'nullable|url|max:255',
+            'gmap_embed_link' => 'nullable|string',
         ]);
 
         $data = $request->all();

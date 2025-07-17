@@ -9,12 +9,7 @@ class Wisata extends Model
 {
     use HasFactory;
 
-    /**
-     * Nama tabel yang terhubung dengan model ini.
-     *
-     * @var string
-     */
-    protected $table = 'wisata'; // <-- TAMBAHKAN BARIS INI
+    protected $table = 'wisata';
 
     /**
      * Atribut yang dapat diisi secara massal.
@@ -27,10 +22,14 @@ class Wisata extends Model
         'lokasi',
         'kategori_id',
         'user_id',
-        'gambar'
+        'gambar',
+        'harga_tiket',
+        'jam_operasional',
+        'link_hotel',
+        'gmap_embed_link', // <-- PASTIKAN BARIS INI ADA
     ];
 
-    // ... sisa kode relasi ...
+    // ... (kode relasi Anda yang lain) ...
     public function user()
     {
         return $this->belongsTo(User::class);
@@ -40,9 +39,7 @@ class Wisata extends Model
     {
         return $this->belongsTo(Kategori::class);
     }
-
-    // app/Models/Wisata.php
-
+    
     public function sektorPendukung()
     {
         return $this->hasMany(SektorPendukung::class);
