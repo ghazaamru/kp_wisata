@@ -6,11 +6,14 @@ use Illuminate\Http\Request;
 use App\Models\Kategori;
 use App\Models\Wisata;
 use App\Models\Event; // Pastikan ini ada
+use App\Models\Pengaturan;
 
 class HomeController extends Controller
 {
     public function index(Request $request)
     {
+        $pengaturan = Pengaturan::pluck('value', 'key')->all();
+
         // Ambil data destinasi dengan pagination
         $destinations = Wisata::latest()->paginate(6);
 
@@ -30,10 +33,6 @@ class HomeController extends Controller
                        ->take(3)
                        ->get();
 
-        return view('halaman-utama', [
-            'categories' => $categories,
-            'destinations' => $destinations,
-            'events' => $events
-        ]);
+        return view('halaman-utama', compact('destinations', 'categories', 'events', 'pengaturan'));
     }
 }

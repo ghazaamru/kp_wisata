@@ -26,10 +26,9 @@ class Wisata extends Model
         'harga_tiket',
         'jam_operasional',
         'link_hotel',
-        'gmap_embed_link', // <-- PASTIKAN BARIS INI ADA
+        'gmap_embed_link', 
     ];
 
-    // ... (kode relasi Anda yang lain) ...
     public function user()
     {
         return $this->belongsTo(User::class);
@@ -43,5 +42,10 @@ class Wisata extends Model
     public function sektorPendukung()
     {
         return $this->hasMany(SektorPendukung::class);
+    }
+
+    public function galeri()
+    {
+        return $this->hasMany(GaleriWisata::class);
     }
 }

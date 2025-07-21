@@ -40,9 +40,12 @@
                     @endif
                     <td class="text-center">
                         <form action="{{ route('admin.wisata.destroy', $data->id) }}" method="POST" class="d-inline-flex gap-1">
-                            <a class="btn btn-success btn-sm" href="{{ route('admin.wisata.sektor-pendukung.index', $data->id) }}" title="Kelola Sektor">
+                            <a class="btn btn-success btn-sm" href="{{ route('admin.wisata.sektor-pendukung.index', $data->id) }}" title="Kelola Sektor Pendukung">
                                 <i class="bi bi-building"></i>
                             </a>
+                             <a class="btn btn-warning btn-sm" href="{{ route('admin.galeri.index', $data->id) }}" title="Kelola Galeri">
+                                <i class="bi bi-images"></i>
+                            </a> 
                             <a class="btn btn-info btn-sm" href="{{ route('admin.wisata.edit', $data->id) }}" title="Edit">
                                 <i class="bi bi-pencil-square"></i>
                             </a>

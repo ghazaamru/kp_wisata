@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sistem Informasi Pariwisata</title>
+    <title>{{ $pengaturan['site_title'] ?? 'Sistem Informasi Pariwisata' }}</title>
 
     <!-- CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -17,7 +17,7 @@
             background-color: #f8f9fa;
         }
         .hero-section {
-            background: url("{{ asset('images/gunung.jpg') }}") no-repeat center center;
+            background: url("{{ isset($pengaturan['hero_image']) ? asset('storage/' . $pengaturan['hero_image']) : asset('images/gunung.jpg') }}") no-repeat center center;
             background-size: cover;
             height: 60vh;
             display: flex;
@@ -54,7 +54,7 @@
     <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm sticky-top">
         <div class="container">
             <a class="navbar-brand fw-bold" href="{{ route('home') }}">
-                <i class="bi bi-geo-alt-fill text-primary"></i> YokWisata
+                <i class="bi bi-geo-alt-fill text-primary"></i> {{ $pengaturan['site_title'] ?? 'YokWisata' }}
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
@@ -83,8 +83,8 @@
     <!-- Hero Section -->
     <header class="hero-section text-center">
         <div class="container">
-            <h1 class="display-4 fw-bold">Jelajahi Keindahan Nusantara</h1>
-            <p class="lead my-3">Temukan destinasi wisata, event menarik, dan layanan pendukung terbaik di seluruh Indonesia.</p>
+            <h1 class="display-4 fw-bold">{{ $pengaturan['hero_title'] ?? 'Jelajahi Keindahan Nusantara' }}</h1>
+            <p class="lead my-3">{{ $pengaturan['hero_subtitle'] ?? 'Temukan destinasi wisata, event menarik, dan layanan pendukung terbaik di seluruh Indonesia.' }}</p>
         </div>
     </header>
 
@@ -162,7 +162,34 @@
 
     <!-- Footer -->
     <footer class="bg-dark text-white pt-5 pb-4">
-        {{-- ... (isi footer Anda) ... --}}
+        <div class="container text-center text-md-start">
+            <div class="row">
+                <div class="col-md-3 col-lg-4 col-xl-3 mx-auto mb-4">
+                    <h6 class="text-uppercase fw-bold">{{ $pengaturan['site_title'] ?? 'YokWisata' }}</h6>
+                    <hr class="mb-4 mt-0 d-inline-block mx-auto" style="width: 60px; background-color: #0d6efd; height: 2px"/>
+                    <p>
+                        Platform informasi pariwisata terpadu untuk menjelajahi kekayaan alam dan budaya Indonesia.
+                    </p>
+                </div>
+                <div class="col-md-3 col-lg-2 col-xl-2 mx-auto mb-4">
+                    <h6 class="text-uppercase fw-bold">Link Cepat</h6>
+                    <hr class="mb-4 mt-0 d-inline-block mx-auto" style="width: 60px; background-color: #0d6efd; height: 2px"/>
+                    <p><a href="#destinasi" class="text-white text-decoration-none">Destinasi</a></p>
+                    <p><a href="#event" class="text-white text-decoration-none">Event</a></p>
+                    <p><a href="{{ route('login') }}" class="text-white text-decoration-none">Login Admin</a></p>
+                </div>
+                <div class="col-md-4 col-lg-3 col-xl-3 mx-auto mb-md-0 mb-4">
+                    <h6 class="text-uppercase fw-bold">Kontak</h6>
+                    <hr class="mb-4 mt-0 d-inline-block mx-auto" style="width: 60px; background-color: #0d6efd; height: 2px"/>
+                    <p><i class="bi bi-geo-alt-fill me-3"></i> {{ $pengaturan['contact_address'] ?? 'Semarang, Indonesia' }}</p>
+                    <p><i class="bi bi-envelope-fill me-3"></i> {{ $pengaturan['contact_email'] ?? 'info@yokwisata.com' }}</p>
+                    <p><i class="bi bi-telephone-fill me-3"></i> {{ $pengaturan['contact_phone'] ?? '+62 24 1234 5678' }}</p>
+                </div>
+            </div>
+        </div>
+        <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2)">
+            © {{ date('Y') }} {{ $pengaturan['site_title'] ?? 'YokWisata' }}
+        </div>
     </footer>
 
     <!-- Bootstrap JS -->

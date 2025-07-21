@@ -9,14 +9,21 @@ class SektorPendukung extends Model
 {
     use HasFactory;
 
-    protected $table = 'sektor_pendukung';
+        protected $table = 'sektor_pendukung';
 
-    protected $fillable = [
-        'wisata_id', 'nama_sektor', 'jenis', 'deskripsi', 'alamat', 'kontak', 'gambar'
-    ];
+        protected $fillable = [
+            'wisata_id',
+            'nama_sektor',
+            'jenis',
+            'deskripsi',
+            'alamat',
+            'kontak',
+            'gambar',
+        ];
 
-    public function wisata()
-    {
-        return $this->belongsTo(Wisata::class);
-    }
+        // Mendefinisikan bahwa satu sektor dimiliki oleh satu wisata
+        public function wisata()
+        {
+            return $this->belongsTo(Wisata::class);
+        }
 }
