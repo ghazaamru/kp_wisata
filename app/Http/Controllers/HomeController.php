@@ -24,7 +24,7 @@ class HomeController extends Controller
         }
 
         // Ambil data lain untuk pemuatan halaman penuh
-        $categories = Kategori::take(4)->get();
+        $categories = Kategori::take(6)->get();
         
         // PERUBAHAN DI SINI: Mengambil data event dari database
         // Hanya ambil event yang akan datang atau sedang berlangsung

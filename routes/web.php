@@ -10,6 +10,7 @@ use App\Http\Controllers\EventController;
 use App\Http\Controllers\PengaduanController;
 use App\Http\Controllers\PengaturanController;
 use App\Http\Controllers\GaleriController;
+use App\Http\Controllers\SearchController;
 
 // Import semua Model yang akan digunakan di dalam route
 use App\Models\Wisata;
@@ -30,6 +31,8 @@ Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/destinasi/{wisata}', [WisataController::class, 'show'])->name('destinasi.show');
 Route::get('/kontak-kami', [PengaduanController::class, 'create'])->name('pengaduan.create');
 Route::post('/kontak-kami', [PengaduanController::class, 'store'])->name('pengaduan.store');
+Route::get('/search', [SearchController::class, 'index'])->name('search');
+Route::get('/kategori/{kategori}', [KategoriController::class, 'show'])->name('kategori.show');
 
 
 // ===================================================

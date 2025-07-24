@@ -50,8 +50,15 @@
             height: 400px;
         }
         .sektor-card-img {
-            height: 180px;
+            height: 120px;
             object-fit: cover;
+        }
+        .sektor-card .card-body {
+            padding: 0.75rem;
+        }
+        .sektor-card .card-title {
+            font-size: 1rem;
+            margin-bottom: 0.25rem;
         }
     </style>
 </head>

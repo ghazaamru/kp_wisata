@@ -94,28 +94,28 @@
             </li>
             <li class="nav-item">
                 <a class="nav-link {{ request()->routeIs('admin.wisata.*') ? 'active' : '' }}" href="{{ route('admin.wisata.index') }}">
-                    <i class="bi bi-geo-alt-fill"></i>Manajemen Wisata
+                    <i class="bi bi-geo-alt-fill"></i>Destinasi Wisata
                 </a>
             </li>
             <li class="nav-item">
                 <a class="nav-link {{ request()->routeIs('admin.kategori.*') ? 'active' : '' }}" href="{{ route('admin.kategori.index') }}">
-                    <i class="bi bi-tags-fill"></i>Manajemen Kategori
+                    <i class="bi bi-tags-fill"></i>Kategori
                 </a>
             </li>
             <li class="nav-item">
                 <a class="nav-link {{ request()->routeIs('admin.events.*') ? 'active' : '' }}" href="{{ route('admin.events.index') }}">
-                    <i class="bi bi-calendar-event-fill"></i>Manajemen Event
+                    <i class="bi bi-calendar-event-fill"></i>Event
                 </a>
             </li>
             @if(auth()->user()->role == 'superadmin')
             <li class="nav-item">
                 <a class="nav-link {{ request()->routeIs('admin.pengaduan.*') ? 'active' : '' }}" href="{{ route('admin.pengaduan.index') }}">
-                    <i class="bi bi-chat-left-text-fill"></i>Manajemen Pengaduan
+                    <i class="bi bi-chat-left-text-fill"></i>Pengaduan
                 </a>
             </li>
             <li class="nav-item">
                 <a class="nav-link {{ request()->routeIs('admin.pengaturan.*') ? 'active' : '' }}" href="{{ route('admin.pengaturan.index') }}">
-                    <i class="bi bi-gear-fill"></i>Manajemen Pengaturan
+                    <i class="bi bi-gear-fill"></i>Pengaturan
                 </a>
             </li>
             @endif

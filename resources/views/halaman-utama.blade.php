@@ -19,36 +19,67 @@
         .hero-section {
             background: url("{{ isset($pengaturan['hero_image']) ? asset('storage/' . $pengaturan['hero_image']) : asset('images/gunung.jpg') }}") no-repeat center center;
             background-size: cover;
-            height: 60vh;
+            height: 85vh;
             display: flex;
             align-items: center;
             justify-content: center;
             color: white;
             text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.6);
         }
-        .card-img-top {
-            height: 200px;
-            object-fit: cover;
-        }
         .section-title {
             font-weight: 700;
             margin-bottom: 30px;
             text-align: center;
         }
-        .category-icon {
-            font-size: 3rem;
-            color: #0d6efd;
-        }
         .card {
             transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+            border-radius: 1rem; /* Membuat sudut lebih bulat */
+            border: none;
         }
         .card:hover {
             transform: translateY(-5px);
             box-shadow: 0 8px 16px rgba(0,0,0,0.15);
         }
+        .category-card {
+            padding: 1rem 0.5rem;
+            text-align: left;
+        }
+        .category-card h5 {
+            font-weight: 600;
+        }
+        .category-card p {
+            font-size: 0.85rem; 
+            color: #6c757d; 
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            display: -webkit-box;
+        }
+        .destination-card-v2 {
+            background-color: #fff;
+            display: block;
+            text-decoration: none;
+            color: inherit;
+        }
+        .destination-card-v2 .card-img-top {
+            height: 180px;
+            object-fit: cover;
+            border-radius: 1rem 1rem 0 0; /* Sudut bulat hanya di atas */
+        }
+        .destination-card-v2 .card-body {
+            padding: 1rem 1.25rem;
+        }
+        .destination-card-v2 .card-title {
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+        .destination-card-v2 .card-text {
+            color: #6c757d;
+            font-size: 0.9rem;
+        }
     </style>
 </head>
-<body>
+<body class="d-flex flex-column min-vh-100">
 
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm sticky-top">
@@ -70,11 +101,16 @@
                     <li class="nav-item">
                         <a class="nav-link" href="#event">Event</a>
                     </li>
-                    <li class="nav-item">
+                    <form action="{{ route('search') }}" method="GET" class="d-flex mx-auto" style="width: 50%;">
+                    <input type="text" name="query" class="form-control" placeholder="Cari destinasi..." required>
+                    <button class="btn btn-primary" type="submit"><i class="bi bi-search"></i></button>
+                </form>
+
+                    <!-- <li class="nav-item">
                         <a class="btn btn-primary ms-lg-3" href="{{ route('login') }}">
                            <i class="bi bi-box-arrow-in-right"></i> Login
                         </a>
-                    </li>
+                    </li> -->
                 </ul>
             </div>
         </div>
@@ -86,20 +122,25 @@
             <h1 class="display-4 fw-bold">{{ $pengaturan['hero_title'] ?? 'Jelajahi Keindahan Nusantara' }}</h1>
             <p class="lead my-3">{{ $pengaturan['hero_subtitle'] ?? 'Temukan destinasi wisata, event menarik, dan layanan pendukung terbaik di seluruh Indonesia.' }}</p>
         </div>
+        
     </header>
 
-    <main class="container my-5">
+    <main class="container my-5 flex-grow-1">
 
         <!-- Kategori Wisata Section -->
         <section id="kategori" class="mb-5 py-5">
             <h2 class="section-title">Kategori Wisata</h2>
-            <div class="row text-center g-4">
+            <div class="row text-center g-3">
                 @forelse($categories as $category)
-                    <div class="col-6 col-md-3">
-                        <div class="card p-3 border-0 shadow-sm h-100 justify-content-center">
-                            <i class="bi bi-tag category-icon"></i>
-                            <h5 class="mt-3">{{ $category->nama_kategori }}</h5>
-                        </div>
+                    <div class="col-6 col-md-4 col-lg-2">
+                        <a href="{{ route('kategori.show', $category->id) }}" class="text-decoration-none">
+                            <div class="card category-card border-0 shadow-sm h-100">
+                                <div class="card-body">
+                                    <h5 class="card-title text-dark">{{ $category->nama_kategori }}</h5>
+                                    <p class="card-text">{{ $category->deskripsi ?? 'Deskripsi tidak tersedia.' }}</p>
+                                </div>
+                            </div>
+                        </a>
                     </div>
                 @empty
                     <p class="text-center text-muted">Kategori belum tersedia.</p>
@@ -118,7 +159,6 @@
             </div>
         </section>
 
-        <!-- Event Mendatang Section -->
         <!-- Event Mendatang Section -->
 <section id="event" class="mb-5 py-5">
     <h2 class="section-title">Event Mendatang</h2>
@@ -146,11 +186,8 @@
         <section id="dukungan" class="py-5 bg-primary text-white text-center rounded">
             <div class="container">
                 <h2 class="section-title text-white">Layanan & Masukan</h2>
-                <p>Temukan hotel, restoran, dan agen travel terbaik untuk perjalanan Anda. Punya keluhan atau masukan? Kami siap mendengarkan.</p>
+                <p>Punya keluhan atau masukan? Kami siap mendengarkan.</p>
                 <div class="mt-4">
-                    <a href="#" class="btn btn-light btn-lg me-2">
-                       <i class="bi bi-building"></i> Sektor Pendukung
-                    </a>
                     <a href="{{ route('pengaduan.create') }}" class="btn btn-outline-light btn-lg">
                        <i class="bi bi-chat-left-text"></i> Buat Pengaduan
                     </a>
@@ -161,7 +198,7 @@
     </main>
 
     <!-- Footer -->
-    <footer class="bg-dark text-white pt-5 pb-4">
+    <footer class="bg-dark text-white pt-5 pb-4 mt-auto">
         <div class="container text-center text-md-start">
             <div class="row">
                 <div class="col-md-3 col-lg-4 col-xl-3 mx-auto mb-4">
@@ -195,7 +232,6 @@
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
-    <!-- PERUBAHAN DI SINI: Menggunakan tag <script> standar -->
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             // Fungsi untuk memuat konten destinasi via AJAX

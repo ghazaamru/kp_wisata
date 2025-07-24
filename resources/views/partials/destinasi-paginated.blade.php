@@ -1,21 +1,20 @@
-{{-- File ini hanya berisi bagian yang akan di-refresh --}}
 <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
     @forelse($destinations as $destination)
     <div class="col">
-        <div class="card h-100 shadow-sm border-0">
+        <a href="{{ route('destinasi.show', $destination->id) }}" class="card h-100 shadow-sm destination-card-v2">
             @if($destination->gambar)
                 <img src="{{ asset('storage/' . $destination->gambar) }}" class="card-img-top" alt="{{ $destination->nama_obyek_wisata }}">
             @else
                 <img src="https://source.unsplash.com/400x300/?{{ $destination->lokasi }}" class="card-img-top" alt="{{ $destination->nama_obyek_wisata }}">
             @endif
-            <div class="card-body">
-                <h5 class="card-title fw-bold">{{ $destination->nama_obyek_wisata }}</h5>
-                <p class="card-text text-muted"><i class="bi bi-geo-alt"></i> {{ $destination->lokasi }}</p>
+            <div class="card-body d-flex justify-content-between align-items-center">
+                <div>
+                    <h5 class="card-title mb-1">{{ $destination->nama_obyek_wisata }}</h5>
+                    <p class="card-text mb-0"><i class="bi bi-geo-alt"></i> {{ $destination->lokasi }}</p>
+                </div>
+                <i class="bi bi-chevron-right text-primary"></i>
             </div>
-            <div class="card-footer bg-white border-0">
-                <a href="{{ route('destinasi.show', $destination->id) }}" class="btn btn-outline-primary w-100">Lihat Detail</a>
-            </div>
-        </div>
+        </a>
     </div>
     @empty
         <div class="col-12">

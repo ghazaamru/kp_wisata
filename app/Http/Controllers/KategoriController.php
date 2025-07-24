@@ -14,6 +14,19 @@ class KategoriController extends Controller
         return view('admin.kategori.index', compact('semuaKategori'));
     }
 
+    // menampilkan satu kategori
+    public function show(Kategori $kategori)
+        {
+            // Ambil semua wisata yang memiliki kategori_id ini, dengan pagination
+            $destinasi = $kategori->wisata()->latest()->paginate(9);
+
+            // Kirim data kategori dan destinasi ke view baru
+            return view('kategori-show', [
+                'kategori' => $kategori,
+                'destinasi' => $destinasi,
+            ]);
+        }
+
     // Menampilkan form tambah kategori
     public function create()
     {

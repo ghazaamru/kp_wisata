@@ -21,4 +21,9 @@ class Kategori extends Model
         'nama_kategori',
         'deskripsi',
     ];
+
+    public function wisata()
+    {
+        return $this->hasMany(Wisata::class);
+    }
 }
