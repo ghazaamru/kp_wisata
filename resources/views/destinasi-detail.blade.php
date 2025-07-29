@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ $wisata->nama_obyek_wisata }} - YokWisata</title>
+    <title>{{ $wisata->nama_obyek_wisata }} - {{ $pengaturan['site_title']->value ?? 'YokWisata' }}</title>
     
     <!-- CSS Libraries -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -68,7 +68,7 @@
     <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm sticky-top">
         <div class="container">
             <a class="navbar-brand fw-bold" href="{{ route('home') }}">
-                <i class="bi bi-geo-alt-fill text-primary"></i> YokWisata
+                <i class="bi bi-geo-alt-fill text-primary"></i> {{ $pengaturan['site_title']->value ?? 'YokWisata' }}
             </a>
             <a href="{{ route('home') }}" class="btn btn-outline-primary">
                 <i class="bi bi-arrow-left"></i> Kembali ke Beranda
@@ -113,7 +113,9 @@
                 <article class="card border-0 shadow-sm mb-4">
                     <div class="card-body p-4">
                         <h3 class="mb-3">Tentang Destinasi</h3>
-                        <p class="text-muted" style="text-align: justify;">{{ $wisata->deskripsi }}</p>
+                        <div class="text-muted" style="text-align: justify;">
+                            {!! $wisata->deskripsi !!}
+                        </div>
                     </div>
                 </article>
 
@@ -203,7 +205,9 @@
                 <article class="card border-0 shadow-sm mb-4">
                     <div class="card-body p-4">
                         <h3 class="mb-3">Tentang Destinasi</h3>
-                        <p class="text-muted" style="text-align: justify;">{{ $wisata->deskripsi }}</p>
+                        <div class="text-muted" style="text-align: justify;">
+                            {!! $wisata->deskripsi !!}
+                        </div>
                     </div>
                 </article>
 
@@ -284,7 +288,7 @@
 
     <!-- Footer -->
     <footer class="bg-dark text-white text-center p-3 mt-5">
-        © 2025 YokWisata
+        © {{ date('Y') }} {{ $pengaturan['site_title']->value ?? 'YokWisata' }}
     </footer>
 
     <!-- JavaScript Libraries -->

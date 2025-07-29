@@ -3,12 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Destinasi Kategori: {{ $kategori->nama_kategori }} - YokWisata</title>
+    <title>Destinasi Kategori: {{ $kategori->nama_kategori }} - {{ $pengaturan['site_title']->value ?? 'YokWisata' }}</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        /* PERUBAHAN UNTUK STICKY FOOTER */
         html, body {
             height: 100%;
         }
@@ -19,13 +18,11 @@
             flex-direction: column;
         }
         main {
-            flex: 1 0 auto; /* Membuat konten utama mengisi ruang yang tersedia */
+            flex: 1 0 auto;
         }
         footer {
-            flex-shrink: 0; /* Mencegah footer menyusut */
+            flex-shrink: 0;
         }
-        /* AKHIR PERUBAHAN */
-
         .card {
             transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
             border-radius: 1rem;
@@ -64,8 +61,9 @@
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm sticky-top">
         <div class="container">
+            {{-- PERUBAHAN DI SINI --}}
             <a class="navbar-brand fw-bold" href="{{ route('home') }}">
-                <i class="bi bi-geo-alt-fill text-primary"></i> YokWisata
+                <i class="bi bi-geo-alt-fill text-primary"></i> {{ $pengaturan['site_title']->value ?? 'YokWisata' }}
             </a>
             <a href="{{ route('home') }}" class="btn btn-outline-primary">
                 <i class="bi bi-arrow-left"></i> Kembali ke Beranda
@@ -117,7 +115,7 @@
 
     <!-- Footer -->
     <footer class="bg-dark text-white text-center p-3 mt-auto">
-        © 2025 YokWisata
+        © {{ date('Y') }} {{ $pengaturan['site_title']->value ?? 'YokWisata' }}
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>

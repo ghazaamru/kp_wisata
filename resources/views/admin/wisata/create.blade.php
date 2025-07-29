@@ -15,7 +15,7 @@
                 </div>
                 <div class="mb-3">
                     <label for="deskripsi" class="form-label">Deskripsi</label>
-                    <textarea class="form-control" style="height:150px" name="deskripsi" id="deskripsi" placeholder="Jelaskan tentang obyek wisata ini">{{ old('deskripsi') }}</textarea>
+                    <textarea class="form-control wysiwyg-editor" style="height:250px" name="deskripsi" id="deskripsi"></textarea>
                 </div>
                 <div class="mb-3">
                     <label for="gmap_embed_link" class="form-label">Lokasi Google Maps (Embed Code)</label>

@@ -17,7 +17,7 @@
                 </div>
                 <div class="mb-3">
                     <label for="deskripsi" class="form-label">Deskripsi</label>
-                    <textarea class="form-control" style="height:150px" name="deskripsi">{{ old('deskripsi', $wisata->deskripsi) }}</textarea>
+                    <textarea class="form-control wysiwyg-editor" style="height:250px" name="deskripsi" id="deskripsi">{{ old('deskripsi', $wisata->deskripsi) }}</textarea>
                 </div>
                 
                 {{-- TAMBAHKAN BLOK INI --}}

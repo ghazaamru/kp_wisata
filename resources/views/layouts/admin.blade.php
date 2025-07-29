@@ -161,5 +161,19 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.ckeditor.com/ckeditor5/41.4.2/classic/ckeditor.js"></script>
+     <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Cari semua textarea dengan kelas .wysiwyg-editor
+            const editors = document.querySelectorAll('textarea.wysiwyg-editor');
+            editors.forEach(editor => {
+                ClassicEditor
+                    .create(editor)
+                    .catch(error => {
+                        console.error(error);
+                    });
+            });
+        });
+    </script>
 </body>
 </html>
