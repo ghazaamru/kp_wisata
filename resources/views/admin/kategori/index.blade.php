@@ -1,10 +1,8 @@
 @extends('layouts.admin')
 
-{{-- Judul Halaman --}}
 @section('title', 'Manajemen Kategori')
 @section('page-title', 'Manajemen Data Kategori')
 
-{{-- Tombol Aksi di Header --}}
 @section('header-actions')
     <a href="{{ route('admin.kategori.create') }}" class="btn btn-primary">
         <i class="bi bi-plus-circle"></i> Tambah Kategori Baru

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Destinasi Kategori: {{ $kategori->nama_kategori }} - {{ $pengaturan['site_title']->value ?? 'YokWisata' }}</title>
+    <title>Pilih Kategori Destinasi - {{ $pengaturan['site_title']->value ?? 'YokWisata' }}</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -23,35 +23,45 @@
         footer {
             flex-shrink: 0;
         }
-        .card {
-            transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
-            border-radius: 1rem;
+        .category-card-v2 {
             border: none;
-        }
-        .card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
-        }
-        .destination-card-v2 {
-            background-color: #fff;
+            border-radius: 1rem;
+            overflow: hidden;
+            position: relative;
             display: block;
             text-decoration: none;
-            color: inherit;
+            height: 250px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
         }
-        .destination-card-v2 .card-img-top {
-            height: 180px;
+        .category-card-v2:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+        }
+        .category-card-v2 img {
+            width: 100%;
+            height: 100%;
             object-fit: cover;
-            border-radius: 1rem 1rem 0 0;
+            transition: transform 0.3s;
         }
-        .destination-card-v2 .card-body {
-            padding: 1rem 1.25rem;
+        .category-card-v2:hover img {
+            transform: scale(1.05);
         }
-        .destination-card-v2 .card-title {
+        .category-card-v2 .card-img-overlay {
+            background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0) 60%);
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            padding: 1.5rem;
+        }
+        .category-card-v2 .card-title {
             font-weight: 600;
-            font-size: 1.1rem;
+            font-size: 1.5rem;
+            color: #fff;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
         }
-        .destination-card-v2 .card-text {
-            color: #6c757d;
+        .category-card-v2 .card-text {
+            color: rgba(255,255,255,0.9);
             font-size: 0.9rem;
         }
     </style>
@@ -73,42 +83,34 @@
     <!-- Konten Halaman Kategori -->
     <main class="container my-5">
         <div class="text-center mb-5">
-            <h1 class="fw-bold">Kategori: {{ $kategori->nama_kategori }}</h1>
-            <p class="lead text-muted">{{ $kategori->deskripsi }}</p>
+            <h1 class="fw-bold">Pilih Kategori Destinasi</h1>
+            <p class="lead text-muted">Jelajahi berbagai jenis wisata yang ditawarkan di Gunung Kidul.</p>
         </div>
 
         <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
-            @forelse($destinasi as $item)
+            @forelse($semuaKategori as $kategori)
             <div class="col">
-                <a href="{{ route('destinasi.show', $item->id) }}" class="card h-100 shadow-sm destination-card-v2">
-                    @if($item->gambar)
-                        <img src="{{ asset('storage/' . $item->gambar) }}" class="card-img-top" alt="{{ $item->nama_obyek_wisata }}">
+                <a href="{{ route('kategori.show', $kategori->id) }}" class="category-card-v2">
+                    {{-- PERUBAHAN DI SINI: Menampilkan gambar dari database --}}
+                    @if($kategori->gambar)
+                        <img src="{{ asset('storage/' . $kategori->gambar) }}" class="card-img" alt="{{ $kategori->nama_kategori }}">
                     @else
-                        <img src="https://source.unsplash.com/400x300/?{{ $item->lokasi }}" class="card-img-top" alt="{{ $item->nama_obyek_wisata }}">
+                        {{-- Fallback jika tidak ada gambar --}}
+                        <img src="https://source.unsplash.com/500x500/?{{ $kategori->nama_kategori }}" class="card-img" alt="{{ $kategori->nama_kategori }}">
                     @endif
-                    <div class="card-body d-flex justify-content-between align-items-center">
-                        <div>
-                            <h5 class="card-title mb-1">{{ $item->nama_obyek_wisata }}</h5>
-                            <p class="card-text mb-0"><i class="bi bi-geo-alt"></i> {{ $item->lokasi }}</p>
-                        </div>
-                        <i class="bi bi-chevron-right text-primary"></i>
+                    <div class="card-img-overlay">
+                        <h5 class="card-title">{{ $kategori->nama_kategori }}</h5>
+                        <p class="card-text">{{ \Illuminate\Support\Str::limit($kategori->deskripsi, 50) }}</p>
                     </div>
                 </a>
             </div>
             @empty
                 <div class="col-12">
                     <div class="text-center py-5">
-                        <i class="bi bi-emoji-frown fs-1 text-muted"></i>
-                        <h3 class="mt-3">Belum Ada Destinasi</h3>
-                        <p class="text-muted">Maaf, belum ada destinasi wisata yang ditambahkan untuk kategori ini.</p>
+                        <p class="text-muted">Belum ada kategori yang ditambahkan.</p>
                     </div>
                 </div>
             @endforelse
-        </div>
-
-        <!-- Pagination -->
-        <div class="mt-5 d-flex justify-content-center">
-            {{ $destinasi->links() }}
         </div>
     </main>
 

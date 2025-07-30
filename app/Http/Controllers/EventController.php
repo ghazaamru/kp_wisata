@@ -123,4 +123,24 @@ class EventController extends Controller
         return redirect()->route('admin.events.index')
                          ->with('success', 'Event berhasil dihapus.');
     }
+
+     /**
+         * Menampilkan halaman publik yang berisi semua event.
+         */
+    public function indexPublic()
+    {
+            $events = Event::where('tanggal_mulai', '>=', now()->toDateString())
+                           ->orderBy('tanggal_mulai', 'asc')
+                           ->paginate(9);
+
+            // Kirim data ke view baru
+            return view('events-index', [
+                'events' => $events,
+            ]);
+    }
+
+    public function show(Event $event)
+    {
+        return view('event-detail', compact('event'));
+    }
 }

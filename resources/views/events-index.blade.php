@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Destinasi Kategori: {{ $kategori->nama_kategori }} - {{ $pengaturan['site_title']->value ?? 'YokWisata' }}</title>
+    <title>Daftar Event Mendatang - {{ $pengaturan['site_title']->value ?? 'YokWisata' }}</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -23,36 +23,20 @@
         footer {
             flex-shrink: 0;
         }
-        .card {
+        .event-card {
             transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
             border-radius: 1rem;
             border: none;
+            background-color: #fff;
         }
-        .card:hover {
+        .event-card:hover {
             transform: translateY(-5px);
             box-shadow: 0 8px 25px rgba(0,0,0,0.1);
         }
-        .destination-card-v2 {
-            background-color: #fff;
-            display: block;
-            text-decoration: none;
-            color: inherit;
-        }
-        .destination-card-v2 .card-img-top {
-            height: 180px;
+        .event-card-img {
+            height: 200px;
             object-fit: cover;
             border-radius: 1rem 1rem 0 0;
-        }
-        .destination-card-v2 .card-body {
-            padding: 1rem 1.25rem;
-        }
-        .destination-card-v2 .card-title {
-            font-weight: 600;
-            font-size: 1.1rem;
-        }
-        .destination-card-v2 .card-text {
-            color: #6c757d;
-            font-size: 0.9rem;
         }
     </style>
 </head>
@@ -70,37 +54,39 @@
         </div>
     </nav>
 
-    <!-- Konten Halaman Kategori -->
+    <!-- Konten Halaman Event -->
     <main class="container my-5">
         <div class="text-center mb-5">
-            <h1 class="fw-bold">Kategori: {{ $kategori->nama_kategori }}</h1>
-            <p class="lead text-muted">{{ $kategori->deskripsi }}</p>
+            <h1 class="fw-bold">Event & Aktivitas Mendatang</h1>
+            <p class="lead text-muted">Jangan lewatkan berbagai acara menarik di Gunung Kidul.</p>
         </div>
 
         <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
-            @forelse($destinasi as $item)
+            @forelse($events as $event)
             <div class="col">
-                <a href="{{ route('destinasi.show', $item->id) }}" class="card h-100 shadow-sm destination-card-v2">
-                    @if($item->gambar)
-                        <img src="{{ asset('storage/' . $item->gambar) }}" class="card-img-top" alt="{{ $item->nama_obyek_wisata }}">
-                    @else
-                        <img src="https://source.unsplash.com/400x300/?{{ $item->lokasi }}" class="card-img-top" alt="{{ $item->nama_obyek_wisata }}">
-                    @endif
-                    <div class="card-body d-flex justify-content-between align-items-center">
-                        <div>
-                            <h5 class="card-title mb-1">{{ $item->nama_obyek_wisata }}</h5>
-                            <p class="card-text mb-0"><i class="bi bi-geo-alt"></i> {{ $item->lokasi }}</p>
-                        </div>
-                        <i class="bi bi-chevron-right text-primary"></i>
+                <div class="card h-100 shadow-sm event-card">
+                    <img src="{{ $event->gambar ? asset('storage/' . $event->gambar) : 'https://source.unsplash.com/500x400/?event' }}" class="event-card-img" alt="{{ $event->nama_event }}">
+                    <div class="card-body d-flex flex-column">
+                        <h5 class="card-title fw-bold">{{ $event->nama_event }}</h5>
+                        <p class="card-text text-muted small">
+                            <i class="bi bi-calendar-event"></i> {{ $event->tanggal_mulai->format('d M Y') }}
+                            @if($event->tanggal_selesai)
+                                - {{ $event->tanggal_selesai->format('d M Y') }}
+                            @endif
+                            <br>
+                            <i class="bi bi-geo-alt"></i> {{ $event->lokasi }}
+                        </p>
+                        <p class="card-text flex-grow-1">{{ \Illuminate\Support\Str::limit($event->deskripsi, 100) }}</p>
+                        <a href="{{ route('events.show', $event->id) }}" role="button" class="btn btn-outline-primary mt-auto">Lihat Detail Event</a>
                     </div>
-                </a>
+                </div>
             </div>
             @empty
                 <div class="col-12">
                     <div class="text-center py-5">
-                        <i class="bi bi-emoji-frown fs-1 text-muted"></i>
-                        <h3 class="mt-3">Belum Ada Destinasi</h3>
-                        <p class="text-muted">Maaf, belum ada destinasi wisata yang ditambahkan untuk kategori ini.</p>
+                        <i class="bi bi-calendar-x fs-1 text-muted"></i>
+                        <h3 class="mt-3">Belum Ada Event</h3>
+                        <p class="text-muted">Saat ini belum ada event mendatang yang dijadwalkan.</p>
                     </div>
                 </div>
             @endforelse
@@ -108,7 +94,7 @@
 
         <!-- Pagination -->
         <div class="mt-5 d-flex justify-content-center">
-            {{ $destinasi->links() }}
+            {{ $events->links() }}
         </div>
     </main>
 

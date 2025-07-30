@@ -28,6 +28,9 @@ use App\Models\User;
 // ROUTE PUBLIK (Bisa diakses tanpa login)
 // ===================================================
 Route::get('/', [HomeController::class, 'index'])->name('home');
+Route::get('/event', [EventController::class, 'indexPublic'])->name('events.index');
+Route::get('/event/{event}', [EventController::class, 'show'])->name('events.show');
+Route::get('/destinasi', [KategoriController::class, 'indexPublic'])->name('kategori.index');
 Route::get('/destinasi/{wisata}', [WisataController::class, 'show'])->name('destinasi.show');
 Route::get('/kontak-kami', [PengaduanController::class, 'create'])->name('pengaduan.create');
 Route::post('/kontak-kami', [PengaduanController::class, 'store'])->name('pengaduan.store');
